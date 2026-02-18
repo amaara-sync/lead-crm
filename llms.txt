@@ -1,0 +1,18 @@
+# Lead CRM
+
+A comprehensive Lead CRM application designed for automated business discovery, contact extraction, and outreach tracking.
+
+## Core Capabilities
+- **Business Discovery**: Search Google Places by keyword, location, and radius.
+- **Lead Enrichment**: Fetch full business profiles, websites, and reviews.
+- **Outreach CRM**: Track lead status and interaction history (Contacted, Qualified, etc.).
+
+## Key Entry Points
+- [AI_AGENT.md](AI_AGENT.md): Full API specification and agent-native tool definitions.
+- [/api/search](src/app/api/search/route.ts): Search endpoint.
+- [/api/place-details](src/app/api/place-details/route.ts): Enrichment endpoint.
+
+## Tech Stack
+- Frontend: Next.js (App Router), Tailwind CSS.
+- Persistence: IndexedDB (Client-side lead management).
+- APIs: Google Places API (Server-side proxy).
