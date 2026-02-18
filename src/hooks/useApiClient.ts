@@ -87,5 +87,5 @@ export function useApiClient() {
         []
     );
 
-    return { search, getPlaceDetails, getPhotoUrl, loading, error, results, pagination, setError };
+    return { search, getPlaceDetails, getPhotoUrl, loading, error, results, pagination, setResults, setPagination, setError };
 }

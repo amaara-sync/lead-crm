@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { SearchSession, PlaceSummary } from '@/types';
 import {
     saveSession,
+    getSession,
     getAllSessions,
     deleteSession,
     buildSessionId,
@@ -23,12 +24,25 @@ export function useSession() {
     }, [loadAllSessions]);
 
     const saveCurrentSession = useCallback(
-        async (area: string, type: string, results: PlaceSummary[], nextPageToken?: string) => {
-            const id = buildSessionId(area, type);
+        async (areaCode: string, typeCode: string, newResults: PlaceSummary[], nextPageToken?: string, append = false) => {
+            const id = buildSessionId(areaCode, typeCode);
+            let results = newResults;
+
+            if (append) {
+                // Fetch directly from DB instead of relying on state to avoid stale data
+                const existing = await getSession(id);
+                if (existing) {
+                    const map = new Map();
+                    existing.results.forEach(r => map.set(r.place_id, r));
+                    newResults.forEach(r => map.set(r.place_id, r));
+                    results = Array.from(map.values());
+                }
+            }
+
             const session: SearchSession = {
                 id,
-                area,
-                type,
+                area: areaCode,
+                type: typeCode,
                 results,
                 nextPageToken,
                 timestamp: Date.now(),

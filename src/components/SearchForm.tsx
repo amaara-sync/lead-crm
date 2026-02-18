@@ -134,9 +134,9 @@ export default function SearchForm({ onSearch, loading }: Props) {
 
                 {/* Radius & Search */}
                 <div className="flex flex-1 gap-3">
-                    <div className="flex-1 flex items-center gap-2 bg-slate-800 border border-slate-700 rounded-xl px-3 py-1.5">
+                    <div className="flex-1 flex items-center gap-2 bg-slate-800 border border-slate-700 rounded-xl px-3 h-[46px]">
                         <div className="flex-1">
-                            <div className="flex justify-between items-center mb-1">
+                            <div className="flex justify-between items-center mb-0.5">
                                 <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Radius</span>
                                 <span className="text-[10px] text-indigo-400 font-bold">{radius}{unit}</span>
                             </div>
@@ -157,7 +157,7 @@ export default function SearchForm({ onSearch, loading }: Props) {
                                 setUnit(newUnit);
                                 setRadius(newUnit === 'km' ? 5 : 1000);
                             }}
-                            className="bg-transparent text-xs text-slate-400 outline-none border-l border-slate-700 pl-2 py-1"
+                            className="bg-transparent text-xs text-slate-400 outline-none border-l border-slate-700 pl-2 py-1 h-full"
                         >
                             <option value="km">km</option>
                             <option value="m">m</option>
@@ -168,7 +168,7 @@ export default function SearchForm({ onSearch, loading }: Props) {
                         type="submit"
                         disabled={loading || !area.trim() || !type.trim()}
                         className={clsx(
-                            'flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 whitespace-nowrap',
+                            'flex items-center justify-center gap-2 px-6 h-[46px] rounded-xl font-medium text-sm transition-all duration-200 whitespace-nowrap',
                             loading || !area.trim() || !type.trim()
                                 ? 'bg-slate-700 text-slate-500 cursor-not-allowed'
                                 : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30'

@@ -24,7 +24,7 @@ import Link from 'next/link';
 
 export default function DashboardPage() {
   const { apiKey, hasKey } = useApiKey();
-  const { loading, error, results, pagination, search, getPhotoUrl, setError } = useApiClient();
+  const { loading, error, results, pagination, search, getPhotoUrl, setResults, setPagination, setError } = useApiClient();
   const { sessions, currentSession, loadSession, saveCurrentSession, removeSession } = useSession();
   const {
     interactedLeads, updateLeadStatus, addLeadNote,
@@ -37,8 +37,11 @@ export default function DashboardPage() {
   const [isGlobalCRM, setIsGlobalCRM] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  const [currentQuery, setCurrentQuery] = useState<{ area: string, type: string } | null>(null);
+
   const handleSearch = async (area: string, type: string, radius?: number, location?: string) => {
     setIsGlobalCRM(false);
+    setCurrentQuery({ area, type });
     const data = await search(`${type} in ${area}`, undefined, location, radius);
     if (data) {
       saveCurrentSession(area, type, data.results, data.next_page_token);
@@ -47,13 +50,16 @@ export default function DashboardPage() {
 
   const handlePageChange = async (token: string) => {
     const data = await search('', token);
-    if (data) {
-      saveCurrentSession('', '', data.results, data.next_page_token, true);
+    if (data && currentQuery) {
+      saveCurrentSession(currentQuery.area, currentQuery.type, data.results, data.next_page_token, true);
     }
   };
 
   const handleLoadSession = (session: any) => {
     setIsGlobalCRM(false);
+    setCurrentQuery({ area: session.area, type: session.type });
+    setResults(session.results);
+    setPagination({ nextPageToken: session.nextPageToken });
     loadSession(session);
   };
 
@@ -120,10 +126,10 @@ export default function DashboardPage() {
               </div>
             )}
 
-            <div className="flex items-start gap-3">
+            <div className="flex items-center gap-3">
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 border border-slate-700/30"
+                className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 border border-slate-700/30 h-[46px] w-[46px] flex items-center justify-center flex-shrink-0 transition-colors"
               >
                 {sidebarOpen ? <PanelLeftClose className="w-5 h-5" /> : <PanelLeft className="w-5 h-5" />}
               </button>

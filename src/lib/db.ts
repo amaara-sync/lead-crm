@@ -18,7 +18,7 @@ let dbPromise: Promise<IDBPDatabase<LeadCRMDB>> | null = null;
 
 function getDB() {
     if (!dbPromise) {
-        dbPromise = openDB<LeadCRMDB>('lead-crm-db', 2, {
+        dbPromise = openDB<LeadCRMDB>('lead-crm-db', 3, {
             upgrade(db, oldVersion) {
                 if (oldVersion < 1) {
                     const sessionStore = db.createObjectStore('sessions', { keyPath: 'id' });
@@ -29,6 +29,7 @@ function getDB() {
                     leadStore.createIndex('by-status', 'status');
                     leadStore.createIndex('by-updated', 'updatedAt');
                 }
+                // Version 3 fix for mismatch
             },
         });
     }
